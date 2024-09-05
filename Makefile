@@ -28,6 +28,11 @@ coverage:
 		RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort" \
         RUSTDOCFLAGS="-Cpanic=abort" $(TEST) --features="crypto_k256"
 
+coverage-report: coverage
+	    grcov . -s . --llvm --branch --ignore-not-existing -t html -o ./target/coverage/
+
+	    @echo "Coverage report generated in ./target/coverage/"
+
 clippy: prepare
 	@for features in $(FEATURE_SETS); do \
         ($(CLIPPY) --all-targets --features=$$features -- -D warnings); \
